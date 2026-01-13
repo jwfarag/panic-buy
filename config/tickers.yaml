@@ -1,0 +1,133 @@
+# Panic Buy Detector - Ticker Universe
+# =====================================
+#
+# This file defines the universe of "stable" companies to monitor.
+# Stability criteria:
+# - Large market cap (>$10B suggested)
+# - Low beta (<1.5 suggested)
+# - Consistent earnings history
+# - Low debt/equity ratio
+# - Established business model (not speculative growth)
+#
+# TODO: Implement automatic universe filtering based on these criteria
+# TODO: Add sector ETF mappings for market correlation filtering
+
+# Universe selection criteria (for future auto-filtering)
+selection_criteria:
+  min_market_cap_billions: 10
+  max_beta: 1.5
+  min_years_profitable: 5
+  max_debt_to_equity: 1.0
+  excluded_sectors:
+    - "Biotechnology"          # Too binary (FDA approvals)
+    - "Cryptocurrency"         # Too volatile
+    - "SPACs"                  # Too speculative
+
+# Manually curated stable stocks
+# Organized by sector for easier maintenance
+universe:
+  technology:
+    - symbol: "AAPL"
+      name: "Apple Inc."
+      sector_etf: "XLK"
+    - symbol: "MSFT"
+      name: "Microsoft Corporation"
+      sector_etf: "XLK"
+    - symbol: "GOOGL"
+      name: "Alphabet Inc."
+      sector_etf: "XLK"
+    # TODO: Add more stable tech stocks
+
+  healthcare:
+    - symbol: "JNJ"
+      name: "Johnson & Johnson"
+      sector_etf: "XLV"
+    - symbol: "UNH"
+      name: "UnitedHealth Group"
+      sector_etf: "XLV"
+    - symbol: "PFE"
+      name: "Pfizer Inc."
+      sector_etf: "XLV"
+    # TODO: Add more stable healthcare stocks
+
+  financials:
+    - symbol: "JPM"
+      name: "JPMorgan Chase"
+      sector_etf: "XLF"
+    - symbol: "BRK.B"
+      name: "Berkshire Hathaway"
+      sector_etf: "XLF"
+    - symbol: "V"
+      name: "Visa Inc."
+      sector_etf: "XLF"
+    # TODO: Add more stable financial stocks
+
+  consumer_staples:
+    - symbol: "PG"
+      name: "Procter & Gamble"
+      sector_etf: "XLP"
+    - symbol: "KO"
+      name: "Coca-Cola Company"
+      sector_etf: "XLP"
+    - symbol: "PEP"
+      name: "PepsiCo Inc."
+      sector_etf: "XLP"
+    # TODO: Add more stable consumer staples
+
+  industrials:
+    - symbol: "CAT"
+      name: "Caterpillar Inc."
+      sector_etf: "XLI"
+    - symbol: "HON"
+      name: "Honeywell International"
+      sector_etf: "XLI"
+    - symbol: "UPS"
+      name: "United Parcel Service"
+      sector_etf: "XLI"
+    # TODO: Add more stable industrials
+
+  utilities:
+    - symbol: "NEE"
+      name: "NextEra Energy"
+      sector_etf: "XLU"
+    - symbol: "DUK"
+      name: "Duke Energy"
+      sector_etf: "XLU"
+    - symbol: "SO"
+      name: "Southern Company"
+      sector_etf: "XLU"
+    # TODO: Add more stable utilities
+
+# Market indices and ETFs for correlation filtering
+benchmarks:
+  broad_market:
+    - symbol: "SPY"
+      name: "S&P 500 ETF"
+    - symbol: "QQQ"
+      name: "Nasdaq 100 ETF"
+
+  sector_etfs:
+    - symbol: "XLK"
+      name: "Technology Select Sector"
+    - symbol: "XLV"
+      name: "Health Care Select Sector"
+    - symbol: "XLF"
+      name: "Financial Select Sector"
+    - symbol: "XLP"
+      name: "Consumer Staples Select Sector"
+    - symbol: "XLI"
+      name: "Industrial Select Sector"
+    - symbol: "XLU"
+      name: "Utilities Select Sector"
+    - symbol: "XLE"
+      name: "Energy Select Sector"
+    - symbol: "XLY"
+      name: "Consumer Discretionary Select Sector"
+    - symbol: "XLB"
+      name: "Materials Select Sector"
+    - symbol: "XLRE"
+      name: "Real Estate Select Sector"
+
+  volatility:
+    - symbol: "VIX"
+      name: "CBOE Volatility Index"

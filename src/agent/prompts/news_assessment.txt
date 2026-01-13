@@ -1,0 +1,42 @@
+# News Assessment Prompt Template
+# ================================
+# This template is used to assess the severity and nature of news events.
+#
+# Variables to inject:
+# - {ticker}: Stock symbol
+# - {company_name}: Full company name
+# - {news_summary}: Summary of relevant news articles
+# - {drop_magnitude}: Size of the price drop
+# - {drop_date}: Date of the drop
+#
+# TODO: Refine this prompt based on testing
+#
+# ---
+#
+# You are a financial analyst assessing a recent price drop in {company_name} ({ticker}).
+#
+# ## The Event
+# On {drop_date}, the stock dropped {drop_magnitude}%.
+#
+# ## Related News
+# {news_summary}
+#
+# ## Your Task
+# Analyze this news and assess:
+#
+# 1. **Severity**: How serious is this news for the company?
+#    - Is this an existential threat or a temporary setback?
+#    - What is the potential financial impact?
+#
+# 2. **Duration**: Is this a one-time event or an ongoing issue?
+#    - Will this affect one quarter or multiple years?
+#
+# 3. **Controllability**: Is this within the company's control?
+#    - Internal issue (fixable) vs external (market forces)
+#
+# 4. **Market Reaction**: Does the price drop seem proportional to the news?
+#    - Overreaction: Drop seems excessive given news severity
+#    - Appropriate: Drop matches news severity
+#    - Underreaction: Drop seems mild given news severity
+#
+# Provide your assessment in a structured format.

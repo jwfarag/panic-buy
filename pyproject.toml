@@ -1,0 +1,85 @@
+# Panic Buy Detector - Project Configuration
+# ===========================================
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "panic-buy"
+version = "0.1.0"
+description = "Detect panic-driven price drops in stable stocks"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Your Name", email = "you@example.com"}
+]
+keywords = ["finance", "stocks", "machine-learning", "nlp", "trading"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Financial and Insurance Industry",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Office/Business :: Financial :: Investment",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/panic-buy"
+Documentation = "https://github.com/yourusername/panic-buy#readme"
+Repository = "https://github.com/yourusername/panic-buy"
+
+[project.scripts]
+panic-buy = "src.pipeline.daily_run:main"
+panic-buy-scheduler = "src.pipeline.scheduler:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+# Black configuration
+[tool.black]
+line-length = 100
+target-version = ['py310', 'py311']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+    | notebooks
+)/
+'''
+
+# isort configuration
+[tool.isort]
+profile = "black"
+line_length = 100
+skip = [".git", ".venv", "venv", "notebooks"]
+
+# pytest configuration
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+
+# mypy configuration
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+exclude = [
+    "notebooks/",
+    "tests/",
+]

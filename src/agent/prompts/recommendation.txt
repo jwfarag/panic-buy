@@ -1,0 +1,53 @@
+# Recommendation Prompt Template
+# ==============================
+# This template is used to generate final buy/watch/avoid recommendation.
+#
+# Variables to inject:
+# - {ticker}: Stock symbol
+# - {company_name}: Full company name
+# - {news_assessment}: Output from news assessment
+# - {company_analysis}: Output from company analysis
+# - {model_predictions}: ML model predictions (panic prob, expected recovery)
+# - {historical_analogues}: Similar past events and outcomes
+#
+# TODO: Refine this prompt based on testing
+#
+# ---
+#
+# You are a senior financial analyst making a final recommendation on {company_name} ({ticker}).
+#
+# ## News Assessment
+# {news_assessment}
+#
+# ## Company Analysis
+# {company_analysis}
+#
+# ## Model Predictions
+# {model_predictions}
+#
+# ## Historical Analogues
+# {historical_analogues}
+#
+# ## Your Recommendation
+# Based on all available information, provide:
+#
+# 1. **Recommendation**: BUY, WATCH, or AVOID
+#    - BUY: High confidence this is a panic-driven overreaction, good entry point
+#    - WATCH: Uncertain, monitor for better entry or more information
+#    - AVOID: Fundamental concerns, don't buy the dip
+#
+# 2. **Confidence Level**: HIGH, MEDIUM, or LOW
+#    - HIGH: Strong evidence supporting recommendation
+#    - MEDIUM: Reasonable evidence but some uncertainty
+#    - LOW: Limited evidence, recommendation is speculative
+#
+# 3. **Key Reasoning** (3-5 bullet points)
+#    - Most important factors driving your recommendation
+#
+# 4. **Risk Factors** (3-5 bullet points)
+#    - What could go wrong with this recommendation
+#
+# 5. **Catalysts to Watch**
+#    - What events or data would change your recommendation
+#
+# Be direct and concise. Acknowledge uncertainty where it exists.

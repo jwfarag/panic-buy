@@ -1,0 +1,8 @@
+# Reports directory
+# =================
+# Store generated daily reports:
+# - HTML reports
+# - PDF reports
+# - JSON exports
+#
+# Naming convention: panic_buy_report_{date}_{run_name}.{ext}
