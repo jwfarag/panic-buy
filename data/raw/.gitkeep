@@ -1,0 +1,7 @@
+# Raw data directory
+# ==================
+# Store raw ingested data here:
+# - News articles (JSON/CSV)
+# - Market data (CSV/Parquet)
+#
+# This data is as-fetched from sources, before any processing.

@@ -1,0 +1,6 @@
+# Processed data directory
+# ========================
+# Store cleaned and transformed data here:
+# - Preprocessed news text
+# - Normalized market data
+# - Entity resolution results

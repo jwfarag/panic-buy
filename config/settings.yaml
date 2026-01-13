@@ -1,0 +1,141 @@
+# Panic Buy Detector - Main Configuration
+# ========================================
+
+# Run scheduling
+# ---------------
+# Configure when the daily pipeline runs
+schedule:
+  runs:
+    - name: morning_run
+      time: "06:00"
+      timezone: "America/New_York"
+      enabled: true
+    - name: evening_run
+      time: "18:00"
+      timezone: "America/New_York"
+      enabled: true
+
+  # Alternative: cron expressions for more flexibility
+  # Uncomment to override the above runs
+  # cron_override: "0 6,18 * * 1-5"  # Weekdays at 6am and 6pm
+
+  # Market-aware scheduling
+  market_hours_only: true      # Skip runs on weekends/holidays
+  holiday_calendar: "NYSE"     # Use NYSE holiday calendar
+
+  # Retry settings for failed runs
+  retry:
+    max_attempts: 3
+    backoff_seconds: 300
+
+# Data ingestion settings
+# -----------------------
+ingestion:
+  news_lookback_hours: 24      # How far back to fetch news
+  price_lookback_days: 5       # For drop detection and feature calculation
+
+  # Per-run overrides (optional)
+  run_overrides:
+    morning_run:
+      news_lookback_hours: 14  # Catch overnight news from Asia/Europe
+    evening_run:
+      news_lookback_hours: 12  # Full day coverage
+
+# News source configuration
+# -------------------------
+news_sources:
+  yahoo:
+    enabled: true
+    # TODO: Add rate limiting, proxy settings
+  google:
+    enabled: true
+    # TODO: Add rate limiting, proxy settings
+  seeking_alpha:
+    enabled: true
+    rate_limit_requests_per_minute: 10
+    # TODO: Add authentication if needed
+
+# Market data configuration
+# -------------------------
+market_data:
+  provider: yahoo              # Primary data source
+  # TODO: Add fallback providers
+  cache_days: 30               # How long to cache historical data
+
+# Environment configuration
+# -------------------------
+# Supports local, cloud, or hybrid execution modes
+environment:
+  mode: "local"  # Options: "local", "cloud", "hybrid"
+
+  # Local execution settings
+  local:
+    data_dir: "./data"
+    models_dir: "./models"
+    max_workers: 4             # Parallel processing threads
+    memory_limit_gb: 8
+
+  # Cloud settings (used when mode is "cloud" or "hybrid")
+  cloud:
+    provider: "aws"            # Options: "aws", "gcp", "azure"
+    region: "us-east-1"
+
+    # Storage buckets
+    data_bucket: "panic-buy-data"
+    models_bucket: "panic-buy-models"
+
+    # Compute instances
+    training_instance: "ml.m5.xlarge"
+    inference_instance: "ml.t3.medium"
+
+  # Hybrid mode settings
+  # TODO: Implement hybrid execution pattern
+  # - Run ingestion, feature computation, inference locally
+  # - Offload to cloud:
+  #   - Model training (GPU instances for larger models)
+  #   - Historical data storage (S3/GCS for >10GB datasets)
+  #   - Backtest runs on large date ranges
+  #   - Agent LLM calls (if using cloud-hosted models)
+  # - Sync mechanism between local and cloud storage
+  # - Cost controls (max cloud spend per month)
+  hybrid:
+    enabled: false             # Set to true when implemented
+    offload_training: true
+    offload_storage_threshold_gb: 10
+    offload_backtest_days: 365 # Backtest >1yr goes to cloud
+    sync_frequency: "daily"
+    max_monthly_cloud_spend_usd: 100
+
+# Model settings
+# --------------
+models:
+  panic_detector:
+    version: "latest"          # Or specific version tag
+    threshold: 0.7             # Minimum panic probability to flag
+  recovery_predictor:
+    version: "latest"
+    horizon_days: 30           # Prediction horizon
+
+# Agent settings
+# --------------
+agent:
+  provider: "anthropic"        # Options: "anthropic", "openai"
+  model: "claude-sonnet-4-20250514"
+  max_candidates_for_analysis: 10
+  # TODO: Add API key reference (use env var)
+
+# Reporting settings
+# ------------------
+reporting:
+  output_formats: ["html", "json"]  # Options: "html", "pdf", "json"
+  top_opportunities: 10        # Number of top picks in report
+  include_watchlist: true
+  include_model_performance: true
+
+# Logging
+# -------
+logging:
+  level: "INFO"                # Options: DEBUG, INFO, WARNING, ERROR
+  file: "./logs/panic_buy.log"
+  max_size_mb: 100
+  backup_count: 5

@@ -1,0 +1,150 @@
+# Panic Buy Detector - Drop Threshold Configuration
+# ==================================================
+#
+# This file defines how price drops are categorized by severity.
+# Thresholds can be:
+# - Manually configured here
+# - Automatically learned based on historical recovery rates
+# - Overridden per sector (tech is more volatile than utilities)
+
+# Default severity buckets
+# ------------------------
+# These apply when no sector-specific override exists
+severity_buckets:
+  MINOR:
+    min_drop: 0.01             # 1%
+    max_drop: 0.02             # 2%
+    action: "monitor"
+    description: "Small dip, likely noise. Monitor only."
+
+  MODERATE:
+    min_drop: 0.02             # 2%
+    max_drop: 0.05             # 5%
+    action: "analyze_if_stable"
+    description: "Notable drop. Analyze if company fundamentals are stable."
+
+  MAJOR:
+    min_drop: 0.05             # 5%
+    max_drop: 0.10             # 10%
+    action: "priority_analysis"
+    description: "Significant drop. Priority analysis required."
+
+  SEVERE:
+    min_drop: 0.10             # 10%
+    max_drop: 1.00             # No upper limit
+    action: "immediate_deep_dive"
+    description: "Major drop. Immediate deep dive by agent."
+
+# Sector-specific overrides
+# -------------------------
+# Different sectors have different volatility profiles.
+# Tech stocks move more than utilities, so thresholds should reflect this.
+sector_overrides:
+  XLK:  # Technology - more volatile
+    MINOR:
+      min_drop: 0.015
+      max_drop: 0.03
+    MODERATE:
+      min_drop: 0.03
+      max_drop: 0.07
+    MAJOR:
+      min_drop: 0.07
+      max_drop: 0.12
+    SEVERE:
+      min_drop: 0.12
+      max_drop: 1.00
+
+  XLU:  # Utilities - less volatile
+    MINOR:
+      min_drop: 0.005
+      max_drop: 0.015
+    MODERATE:
+      min_drop: 0.015
+      max_drop: 0.03
+    MAJOR:
+      min_drop: 0.03
+      max_drop: 0.06
+    SEVERE:
+      min_drop: 0.06
+      max_drop: 1.00
+
+  XLF:  # Financials - moderate volatility
+    MINOR:
+      min_drop: 0.01
+      max_drop: 0.025
+    MODERATE:
+      min_drop: 0.025
+      max_drop: 0.06
+    MAJOR:
+      min_drop: 0.06
+      max_drop: 0.10
+    SEVERE:
+      min_drop: 0.10
+      max_drop: 1.00
+
+  # TODO: Add overrides for other sectors (XLV, XLP, XLI, etc.)
+
+# Threshold learning configuration
+# ---------------------------------
+# The system can automatically adjust thresholds based on
+# historical recovery rates for each bucket.
+threshold_learning:
+  enabled: true
+
+  # How far back to look when calculating optimal thresholds
+  lookback_days: 180
+
+  # Minimum samples needed per bucket before adjusting
+  min_samples_per_bucket: 20
+
+  # What metric to optimize for
+  # Options: "recovery_rate_30d", "recovery_magnitude", "sharpe_ratio"
+  target_metric: "recovery_rate_30d"
+
+  # How often to recalculate thresholds
+  # Options: "daily", "weekly", "monthly"
+  adjustment_frequency: "weekly"
+
+  # Maximum adjustment per iteration (prevents wild swings)
+  max_adjustment_percent: 0.20  # 20% max change per adjustment
+
+  # Per-sector learning (if enough data)
+  per_sector_learning: true
+  min_samples_per_sector: 50
+
+# Market correlation thresholds
+# -----------------------------
+# Used by the market filter to separate stock-specific drops
+# from market-wide or sector-wide moves.
+market_filter:
+  # Minimum idiosyncratic drop to consider (after beta adjustment)
+  min_idiosyncratic_drop: 0.02  # 2%
+
+  # If market dropped more than this, be extra cautious about
+  # flagging individual stocks
+  high_market_volatility_threshold: 0.02  # 2% market move
+
+  # Beta calculation lookback
+  beta_lookback_days: 252  # 1 year of trading days
+
+  # Correlation threshold - if stock correlation with market
+  # exceeds this during the drop period, filter it out
+  max_correlation_to_include: 0.8
+
+# Drop type classification hints
+# ------------------------------
+# Keywords and patterns to help classify drop types
+classification_hints:
+  EARNINGS_MISS:
+    keywords: ["earnings", "EPS", "revenue miss", "guidance", "quarterly results"]
+    timing_hint: "within 2 days of earnings date"
+
+  ANALYST_DOWNGRADE:
+    keywords: ["downgrade", "price target", "rating cut", "sell rating"]
+
+  NEWS_REACTION:
+    keywords: ["CEO", "lawsuit", "recall", "investigation", "data breach"]
+
+  SECTOR_ROTATION:
+    keywords: ["sector rotation", "risk-off", "flight to safety"]
+    check_sector_etf: true

@@ -1,0 +1,8 @@
+# Models directory
+# ================
+# Store serialized model artifacts:
+# - Panic detector models
+# - Recovery predictor models
+# - Ensemble configurations
+#
+# Versioning managed by MLflow or model registry.
