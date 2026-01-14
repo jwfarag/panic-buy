@@ -14,11 +14,9 @@ scipy>=1.10
 # Market Data
 yfinance>=0.2.28
 
-# News Scraping
+# News Data
+eventregistry>=9.1        # NewsAPI.ai SDK for article fetching
 requests>=2.31
-beautifulsoup4>=4.12
-feedparser>=6.0
-lxml>=4.9
 
 # NLP
 spacy>=3.6

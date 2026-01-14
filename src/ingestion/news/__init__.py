@@ -1,16 +1,13 @@
 # News Ingestion Submodule
 # ========================
-# Scrapers for news sources.
+# Fetches news articles using NewsAPI.ai (Event Registry).
 #
-# Supported sources:
-# - Yahoo Finance news
-# - Google News RSS
-# - Seeking Alpha articles
+# Provides full article text from thousands of sources including
+# Reuters, Bloomberg, WSJ, and more.
 #
-# Each scraper implements the base NewsSource interface
-# to ensure consistent data format across sources.
+# Requires NEWSAPI_AI_KEY environment variable.
 
 from .base import NewsArticle, NewsSource
-from .yahoo_news import YahooNewsSource
+from .newsapi_source import NewsAPISource
 
-__all__ = ['NewsArticle', 'NewsSource', 'YahooNewsSource']
+__all__ = ['NewsArticle', 'NewsSource', 'NewsAPISource']
