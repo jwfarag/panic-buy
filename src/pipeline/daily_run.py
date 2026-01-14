@@ -94,6 +94,11 @@
 #
 #     def _step_ingest(self) -> tuple:
 #         """Step 1: Ingest news and market data."""
+#         # TODO: Before fetching news, filter the ticker universe down to a
+#         # limited subset based on a performance metric (e.g., recent price
+#         # drops, volatility spikes, unusual volume). This avoids unnecessary
+#         # API calls for stocks that don't warrant news analysis.
+#         # See: config/tickers.yaml for full universe definition
 #         pass
 #
 #     def _step_detect(self, market_data: dict) -> List["DropEvent"]:
