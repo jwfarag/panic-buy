@@ -1,0 +1,98 @@
+{
+  "AAPL": [
+    {
+      "id": "8a7b6c5d-4e3f-2a1b-0c9d-8e7f6a5b4c3d",
+      "source": "Reuters",
+      "title": "Apple Reports Record Q4 Earnings, iPhone Sales Surge",
+      "url": "https://www.reuters.com/technology/apple-q4-earnings-2024",
+      "published_at": "2024-01-15T14:30:00+00:00",
+      "content": "Apple Inc reported record fourth-quarter earnings on Thursday, driven by stronger-than-expected iPhone sales and growth in its services business. The tech giant posted revenue of $119.6 billion, up 8% from the year-ago period, beating analyst expectations of $117.9 billion. iPhone revenue came in at $69.7 billion, a 6% increase year-over-year. CEO Tim Cook said the results reflect the strength of Apple's ecosystem and continued customer loyalty. The company's services segment, which includes the App Store, Apple Music, and iCloud, generated $23.1 billion in revenue, up 11% from last year. Apple also announced a $110 billion share buyback program, the largest in corporate history.",
+      "summary": "Apple Inc reported record fourth-quarter earnings on Thursday, driven by stronger-than-expected iPhone sales and growth in its services business.",
+      "tickers": ["AAPL"]
+    },
+    {
+      "id": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+      "source": "Bloomberg",
+      "title": "Apple Stock Drops 5% After China Sales Warning",
+      "url": "https://www.bloomberg.com/news/apple-china-warning-2024",
+      "published_at": "2024-01-14T09:15:00+00:00",
+      "content": "Apple Inc shares fell as much as 5% in early trading after the company warned of slowing sales in China, its third-largest market. The Cupertino-based company said iPhone shipments in China declined 13% in the December quarter amid increased competition from domestic rivals Huawei and Xiaomi. Analysts at Morgan Stanley downgraded their price target from $220 to $195, citing concerns about Apple's market share in the region. The warning comes as Apple faces renewed competition from Huawei's Mate 60 series, which has gained significant traction among Chinese consumers. Despite the China headwinds, Apple maintained its full-year guidance, pointing to strength in other markets including India and Southeast Asia.",
+      "summary": "Apple Inc shares fell as much as 5% in early trading after the company warned of slowing sales in China, its third-largest market.",
+      "tickers": ["AAPL"]
+    },
+    {
+      "id": "2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e",
+      "source": "CNBC",
+      "title": "Apple Vision Pro Pre-Orders Sell Out in Minutes",
+      "url": "https://www.cnbc.com/apple-vision-pro-preorders-2024",
+      "published_at": "2024-01-13T16:45:00+00:00",
+      "content": "Apple's new Vision Pro headset sold out within minutes of pre-orders opening on Friday, signaling strong initial demand for the company's first major new product category since the Apple Watch. The $3,499 device, which Apple calls a 'spatial computer,' saw pre-order wait times extend to late March within the first hour. Industry analysts estimate Apple sold between 160,000 and 180,000 units in the initial pre-order window. The Vision Pro represents Apple's entry into the augmented and virtual reality market, competing with Meta's Quest headsets. Apple stores will begin in-person demos next week, with the official launch set for February 2.",
+      "summary": "Apple's new Vision Pro headset sold out within minutes of pre-orders opening on Friday, signaling strong initial demand.",
+      "tickers": ["AAPL"]
+    }
+  ],
+  "MSFT": [
+    {
+      "id": "3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f",
+      "source": "Wall Street Journal",
+      "title": "Microsoft Becomes World's Most Valuable Company",
+      "url": "https://www.wsj.com/tech/microsoft-market-cap-2024",
+      "published_at": "2024-01-15T11:00:00+00:00",
+      "content": "Microsoft Corp surpassed Apple Inc to become the world's most valuable publicly traded company on Monday, as investors bet heavily on its artificial intelligence strategy. Microsoft's market capitalization reached $2.89 trillion, edging past Apple's $2.87 trillion valuation. The milestone caps a remarkable turnaround for Microsoft under CEO Satya Nadella, who has transformed the company from a PC-centric software maker into a cloud computing and AI powerhouse. The company's partnership with OpenAI and integration of AI features across its product lineup, including Copilot in Microsoft 365 and Azure AI services, have driven investor enthusiasm. Analysts at Goldman Sachs raised their price target to $450, citing Microsoft's dominant position in enterprise AI.",
+      "summary": "Microsoft Corp surpassed Apple Inc to become the world's most valuable publicly traded company on Monday.",
+      "tickers": ["MSFT"]
+    },
+    {
+      "id": "4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a",
+      "source": "Financial Times",
+      "title": "Microsoft Azure Revenue Jumps 29% on AI Demand",
+      "url": "https://www.ft.com/microsoft-azure-ai-growth-2024",
+      "published_at": "2024-01-14T08:30:00+00:00",
+      "content": "Microsoft's Azure cloud computing platform reported 29% revenue growth in the latest quarter, driven by surging demand for artificial intelligence services. The results exceeded analyst expectations of 26% growth and marked an acceleration from the previous quarter's 27% increase. CFO Amy Hood said AI services contributed approximately 6 percentage points to Azure's growth rate, up from 3 points in the prior quarter. Enterprise customers are increasingly adopting Azure OpenAI Service to build generative AI applications. Microsoft now operates AI infrastructure in over 60 regions globally, giving it a competitive advantage over rivals Amazon Web Services and Google Cloud.",
+      "summary": "Microsoft's Azure cloud computing platform reported 29% revenue growth in the latest quarter, driven by AI demand.",
+      "tickers": ["MSFT"]
+    },
+    {
+      "id": "5e6f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b",
+      "source": "TechCrunch",
+      "title": "Microsoft Announces $10 Billion Investment in OpenAI",
+      "url": "https://techcrunch.com/microsoft-openai-investment-2024",
+      "published_at": "2024-01-12T15:20:00+00:00",
+      "content": "Microsoft has announced an additional $10 billion investment in OpenAI, deepening its partnership with the artificial intelligence research company behind ChatGPT. The investment brings Microsoft's total commitment to OpenAI to approximately $13 billion. As part of the expanded partnership, Microsoft will gain increased access to OpenAI's latest models and technologies for integration into its products and services. The deal also extends Microsoft's exclusive cloud computing agreement, ensuring OpenAI's services run on Azure infrastructure. OpenAI CEO Sam Altman said the investment will help accelerate the development of artificial general intelligence while ensuring AI safety remains a priority.",
+      "summary": "Microsoft has announced an additional $10 billion investment in OpenAI, deepening its AI partnership.",
+      "tickers": ["MSFT"]
+    }
+  ],
+  "GOOGL": [
+    {
+      "id": "6f7a8b9c-0d1e-2f3a-4b5c-6d7e8f9a0b1c",
+      "source": "New York Times",
+      "title": "Google Announces Gemini Ultra, Its Most Powerful AI Model",
+      "url": "https://www.nytimes.com/tech/google-gemini-ultra-2024",
+      "published_at": "2024-01-15T10:00:00+00:00",
+      "content": "Google unveiled Gemini Ultra on Wednesday, its most capable artificial intelligence model to date, in a bid to close the gap with OpenAI's GPT-4. The new model outperforms GPT-4 on most academic benchmarks, according to Google, and is the first AI system to exceed human expert performance on the MMLU test, which covers 57 subjects including math, physics, and law. Gemini Ultra will power a new premium tier of Google's Bard chatbot called Bard Advanced, launching next month. CEO Sundar Pichai called Gemini 'the beginning of a new era' for Google and said the technology will be integrated across the company's products, including Search, Workspace, and Android.",
+      "summary": "Google unveiled Gemini Ultra on Wednesday, its most capable artificial intelligence model to date.",
+      "tickers": ["GOOGL", "GOOG"]
+    },
+    {
+      "id": "7a8b9c0d-1e2f-3a4b-5c6d-7e8f9a0b1c2d",
+      "source": "The Verge",
+      "title": "Google Lays Off Hundreds in Hardware and Assistant Teams",
+      "url": "https://www.theverge.com/google-layoffs-2024",
+      "published_at": "2024-01-13T18:00:00+00:00",
+      "content": "Google has laid off several hundred employees across its hardware, voice assistant, and augmented reality divisions as the company continues to cut costs and refocus on artificial intelligence priorities. The cuts affect teams working on the Pixel phone, Nest smart home devices, and Google Assistant. A company spokesperson said the layoffs are part of ongoing efforts to 'responsibly manage our talent and expenses.' The restructuring comes as Google faces increased competition in AI from Microsoft and pressure from investors to improve profitability. Affected employees will receive severance packages and job placement support. The layoffs follow Google's elimination of approximately 12,000 jobs in early 2023.",
+      "summary": "Google has laid off several hundred employees across its hardware, voice assistant, and augmented reality divisions.",
+      "tickers": ["GOOGL", "GOOG"]
+    },
+    {
+      "id": "8b9c0d1e-2f3a-4b5c-6d7e-8f9a0b1c2d3e",
+      "source": "Reuters",
+      "title": "Alphabet Reports Strong Ad Revenue Despite Economic Headwinds",
+      "url": "https://www.reuters.com/business/alphabet-q4-earnings-2024",
+      "published_at": "2024-01-11T21:30:00+00:00",
+      "content": "Alphabet Inc reported better-than-expected fourth-quarter results on Tuesday, with advertising revenue growing 11% year-over-year despite broader economic uncertainty. Total revenue reached $86.3 billion, up from $76.0 billion in the year-ago quarter. Google Search and YouTube advertising both showed strong growth, while the company's Cloud division turned profitable for the first time with operating income of $864 million. CEO Sundar Pichai highlighted the company's AI investments, noting that AI-powered features are driving increased engagement across Google's products. The company also announced a $70 billion share buyback authorization, its largest ever.",
+      "summary": "Alphabet Inc reported better-than-expected fourth-quarter results with advertising revenue growing 11%.",
+      "tickers": ["GOOGL", "GOOG"]
+    }
+  ]
+}
