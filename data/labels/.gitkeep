@@ -1,0 +1,9 @@
+# Labels directory
+# ================
+# Store labeled data for model training:
+# - Historical panic events with outcomes
+# - Manually labeled drop events
+# - Recovery outcome data
+#
+# Format: CSV or Parquet
+# Key columns: ticker, date, drop_pct, recovered, recovery_pct, days_to_recovery

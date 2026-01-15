@@ -1,0 +1,89 @@
+<!-- Daily Report Template -->
+<!-- ===================== -->
+<!-- Jinja2 template for HTML report rendering -->
+<!--
+Variables available:
+- report: DailyReport object
+- report.report_date: date
+- report.summary: ReportSummary
+- report.top_opportunities: List[OpportunityEntry]
+- report.watchlist: List[OpportunityEntry]
+- report.model_performance: ModelPerformanceSection
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panic Buy Report - {{ report.report_date }}</title>
+    <style>
+        /* TODO: Add styling */
+        /*
+        - Clean, professional look
+        - Good readability
+        - Color coding for recommendations
+        - Responsive design
+        */
+    </style>
+</head>
+<body>
+    <!-- TODO: Implement template structure -->
+
+    <!-- Header -->
+    <header>
+        <h1>Panic Buy Detector - Daily Report</h1>
+        <p>{{ report.report_date }} | {{ report.run_name }}</p>
+    </header>
+
+    <!-- Executive Summary -->
+    <section id="summary">
+        <h2>Executive Summary</h2>
+        <!--
+        - Total drops detected
+        - Drops after filtering
+        - Opportunities identified
+        - Market context
+        - Key highlights
+        -->
+    </section>
+
+    <!-- Top Opportunities -->
+    <section id="opportunities">
+        <h2>Top Opportunities</h2>
+        <!--
+        Table with:
+        - Rank
+        - Ticker
+        - Company
+        - Drop %
+        - Panic Prob
+        - Expected Recovery
+        - Recommendation
+        - Key reasoning
+        -->
+    </section>
+
+    <!-- Watchlist -->
+    <section id="watchlist">
+        <h2>Watchlist</h2>
+        <!-- Similar table for lower-confidence picks -->
+    </section>
+
+    <!-- Model Performance -->
+    <section id="model-performance">
+        <h2>Model Performance</h2>
+        <!--
+        - Recent accuracy
+        - Predictions made
+        - Threshold performance by bucket
+        -->
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>Generated at {{ report.generated_at }}</p>
+        <p>Panic Buy Detector v0.1</p>
+    </footer>
+</body>
+</html>

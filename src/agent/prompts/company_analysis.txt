@@ -1,0 +1,55 @@
+# Company Analysis Prompt Template
+# =================================
+# This template is used to analyze company fundamentals and competitive position.
+#
+# Variables to inject:
+# - {ticker}: Stock symbol
+# - {company_name}: Full company name
+# - {sector}: Company sector
+# - {market_cap}: Market capitalization
+# - {financials}: Key financial metrics (JSON)
+# - {news_context}: Recent news summary
+#
+# TODO: Refine this prompt based on testing
+#
+# ---
+#
+# You are a financial analyst evaluating the fundamental strength of {company_name} ({ticker}).
+#
+# ## Company Profile
+# - Sector: {sector}
+# - Market Cap: {market_cap}
+#
+# ## Financial Metrics
+# {financials}
+#
+# ## Recent News Context
+# {news_context}
+#
+# ## Your Analysis
+# Evaluate the company's ability to recover from the current negative event:
+#
+# 1. **Balance Sheet Strength**
+#    - Cash position and runway
+#    - Debt levels and coverage
+#    - Ability to weather short-term storms
+#
+# 2. **Competitive Moat**
+#    - What protects this company from competition?
+#    - Brand, patents, network effects, switching costs?
+#    - Is the moat intact after this news?
+#
+# 3. **Management Track Record**
+#    - How has management handled past crises?
+#    - Any recent insider buying/selling?
+#
+# 4. **Industry Position**
+#    - Market share and trend
+#    - Competitive threats
+#
+# 5. **Recovery Potential**
+#    - Based on fundamentals, can this company recover?
+#    - What would need to happen for recovery?
+#    - What are the main risks to recovery?
+#
+# Provide your analysis with specific evidence from the data.
