@@ -50,6 +50,17 @@ class NewsAPISource(NewsSource):
                 "variable or pass api_key in config."
             )
 
+        # Debug: log key info to help diagnose authentication issues
+        key_source = "config" if (config or {}).get('api_key') else "NEWSAPI_AI_KEY env var"
+        original_len = len(api_key)
+        api_key = api_key.strip()  # Remove any leading/trailing whitespace
+        stripped_len = len(api_key)
+
+        logger.info(f"NewsAPI.ai key loaded from: {key_source}")
+        logger.info(f"Key prefix: {api_key[:4]}... (length: {stripped_len})")
+        if original_len != stripped_len:
+            logger.warning(f"Key had whitespace stripped ({original_len} -> {stripped_len} chars)")
+
         self._er = EventRegistry(apiKey=api_key)
         self._max_items = (config or {}).get('max_items', 100)
         self._rate_limit_delay = (config or {}).get('rate_limit_delay', 0.5)
