@@ -18,6 +18,8 @@ import sys
 from datetime import date, timedelta
 from pathlib import Path
 
+import pandas as pd
+
 # Add project root to path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
@@ -42,21 +44,31 @@ def fetch_news_data(output_dir: Path, tickers: list[str], lookback_hours: int = 
     source = NewsAPISource(config={"max_items": 5})  # Limit to 5 per ticker
 
     all_articles = {}
+    all_articles_flat = []  # For parquet (flat list)
+
     for ticker in tickers:
         print(f"  Fetching news for {ticker}...", end=" ")
         try:
             articles = source.fetch_for_ticker(ticker, lookback_hours=lookback_hours)
             all_articles[ticker] = [a.to_dict() for a in articles]
+            all_articles_flat.extend([a.to_dict() for a in articles])
             print(f"found {len(articles)} articles")
         except Exception as e:
             print(f"ERROR: {e}")
             all_articles[ticker] = []
 
-    # Save combined articles
-    output_file = output_dir / "sample_articles.json"
-    with open(output_file, "w") as f:
+    # Save as JSON (human-readable)
+    json_file = output_dir / "sample_articles.json"
+    with open(json_file, "w") as f:
         json.dump(all_articles, f, indent=2, default=str)
-    print(f"  Saved to {output_file}")
+    print(f"  Saved JSON to {json_file}")
+
+    # Save as Parquet (pipeline-ready)
+    if all_articles_flat:
+        df = pd.DataFrame(all_articles_flat)
+        parquet_file = output_dir / "sample_articles.parquet"
+        df.to_parquet(parquet_file, index=False)
+        print(f"  Saved Parquet to {parquet_file}")
 
     # Save single article for unit tests
     for ticker, articles in all_articles.items():
@@ -85,35 +97,50 @@ def fetch_market_data(output_dir: Path, tickers: list[str], days: int = 30):
     start_date = end_date - timedelta(days=days)
 
     all_data = {}
+    all_bars_flat = []  # For parquet (flat list with ticker column)
+
     for ticker in tickers:
         print(f"  Fetching {ticker}...", end=" ")
         try:
             data = market.fetch_ohlcv(ticker, start_date, end_date)
+            bars_list = [
+                {
+                    "timestamp": bar.timestamp.isoformat(),
+                    "open": bar.open,
+                    "high": bar.high,
+                    "low": bar.low,
+                    "close": bar.close,
+                    "volume": bar.volume,
+                }
+                for bar in data.bars
+            ]
             all_data[ticker] = {
                 "ticker": ticker,
-                "bars": [
-                    {
-                        "timestamp": bar.timestamp.isoformat(),
-                        "open": bar.open,
-                        "high": bar.high,
-                        "low": bar.low,
-                        "close": bar.close,
-                        "volume": bar.volume,
-                    }
-                    for bar in data.bars
-                ],
+                "bars": bars_list,
                 "metadata": data.metadata,
             }
+            # Add ticker column for flat parquet
+            for bar in bars_list:
+                bar["ticker"] = ticker
+                all_bars_flat.append(bar)
             print(f"found {len(data.bars)} bars")
         except Exception as e:
             print(f"ERROR: {e}")
             all_data[ticker] = {"ticker": ticker, "bars": [], "metadata": {}}
 
-    # Save market data
-    output_file = output_dir / "sample_ohlcv.json"
-    with open(output_file, "w") as f:
+    # Save as JSON (human-readable)
+    json_file = output_dir / "sample_ohlcv.json"
+    with open(json_file, "w") as f:
         json.dump(all_data, f, indent=2, default=str)
-    print(f"  Saved to {output_file}")
+    print(f"  Saved JSON to {json_file}")
+
+    # Save as Parquet (pipeline-ready)
+    if all_bars_flat:
+        df = pd.DataFrame(all_bars_flat)
+        df["timestamp"] = pd.to_datetime(df["timestamp"])
+        parquet_file = output_dir / "sample_ohlcv.parquet"
+        df.to_parquet(parquet_file, index=False)
+        print(f"  Saved Parquet to {parquet_file}")
 
     return True
 
@@ -137,9 +164,24 @@ Requires `NEWSAPI_AI_KEY` in your environment or `.env` file.
 
 ## Contents
 
-- `news/sample_articles.json` - News articles for sample tickers
-- `news/single_article.json` - Single article for unit tests
-- `market/sample_ohlcv.json` - OHLCV price data for sample tickers + benchmarks
+### News Data (`news/`)
+- `sample_articles.json` - News articles grouped by ticker (human-readable)
+- `sample_articles.parquet` - Flat article list (pipeline-ready)
+- `single_article.json` - Single article for unit tests
+
+### Market Data (`market/`)
+- `sample_ohlcv.json` - OHLCV data grouped by ticker (human-readable)
+- `sample_ohlcv.parquet` - Flat OHLCV bars with ticker column (pipeline-ready)
+
+## Usage
+
+```python
+import pandas as pd
+
+# Read parquet for analysis
+articles_df = pd.read_parquet("tests/fixtures/news/sample_articles.parquet")
+ohlcv_df = pd.read_parquet("tests/fixtures/market/sample_ohlcv.parquet")
+```
 """
     with open(readme, "w") as f:
         f.write(content)
