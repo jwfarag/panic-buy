@@ -7,6 +7,7 @@ from datetime import datetime, timezone, timedelta
 from unittest.mock import Mock, patch, MagicMock
 
 from src.ingestion.news.base import NewsArticle, NewsSource
+from src.ingestion.news.massive_source import MassiveNewsSource
 from src.ingestion.news.newsapi_source import NewsAPISource
 
 
@@ -261,6 +262,205 @@ class TestNewsAPISource:
 
         source = NewsAPISource()
         articles = source.fetch_for_ticker("AAPL", lookback_hours=168)  # 1 week
+
+        assert isinstance(articles, list)
+
+        if articles:
+            article = articles[0]
+            assert isinstance(article, NewsArticle)
+            assert article.title
+            assert article.url
+            assert "AAPL" in article.tickers
+
+
+class TestMassiveNewsSource:
+    """Tests for MassiveNewsSource class."""
+
+    @patch.dict(os.environ, {"POLYGON_API_KEY": "test_key"})
+    @patch('src.ingestion.news.massive_source.RESTClient')
+    def test_source_name(self, mock_client):
+        """Test source name property."""
+        source = MassiveNewsSource()
+        assert source.source_name == "massive"
+
+    @patch.dict(os.environ, {"POLYGON_API_KEY": "test_key"})
+    @patch('src.ingestion.news.massive_source.RESTClient')
+    def test_initialization_with_env_var(self, mock_client):
+        """Test initialization with API key from environment."""
+        source = MassiveNewsSource()
+        mock_client.assert_called_once_with("test_key")
+
+    @patch('src.ingestion.news.massive_source.RESTClient')
+    def test_initialization_with_explicit_key(self, mock_client):
+        """Test initialization with explicit API key."""
+        with patch.dict(os.environ, {}, clear=True):
+            os.environ.pop('POLYGON_API_KEY', None)
+            source = MassiveNewsSource(api_key="explicit_key")
+            mock_client.assert_called_once_with("explicit_key")
+
+    def test_initialization_missing_api_key(self):
+        """Test initialization fails without API key."""
+        with patch.dict(os.environ, {}, clear=True):
+            os.environ.pop('POLYGON_API_KEY', None)
+            with pytest.raises(ValueError, match="Polygon API key required"):
+                MassiveNewsSource()
+
+    @patch.dict(os.environ, {"POLYGON_API_KEY": "test_key"})
+    @patch('src.ingestion.news.massive_source.RESTClient')
+    def test_fetch_returns_empty_list(self, mock_client):
+        """Test that fetch() without ticker returns empty list."""
+        source = MassiveNewsSource()
+        articles = source.fetch(lookback_hours=24)
+        assert articles == []
+
+    @patch.dict(os.environ, {"POLYGON_API_KEY": "test_key"})
+    @patch('src.ingestion.news.massive_source.RESTClient')
+    @patch('src.ingestion.news.massive_source.trafilatura')
+    def test_fetch_for_ticker(self, mock_trafilatura, mock_client_class):
+        """Test fetching articles for a ticker."""
+        # Setup mock client
+        mock_client = MagicMock()
+        mock_client_class.return_value = mock_client
+
+        # Create mock news item
+        mock_item = MagicMock()
+        mock_item.id = "article-123"
+        mock_item.title = "Apple News Article"
+        mock_item.article_url = "https://example.com/article"
+        mock_item.published_utc = "2024-01-15T10:30:00Z"
+        mock_item.tickers = ["AAPL"]
+        mock_item.publisher = MagicMock()
+        mock_item.publisher.name = "Reuters"
+
+        mock_client.list_ticker_news.return_value = [mock_item]
+
+        # Setup trafilatura mock
+        mock_trafilatura.fetch_url.return_value = "<html>content</html>"
+        mock_trafilatura.extract.return_value = "Extracted article content."
+
+        source = MassiveNewsSource()
+        articles = source.fetch_for_ticker("AAPL", lookback_hours=24)
+
+        assert len(articles) == 1
+        assert articles[0].id == "article-123"
+        assert articles[0].title == "Apple News Article"
+        assert articles[0].content == "Extracted article content."
+        assert articles[0].source == "Reuters"
+        assert "AAPL" in articles[0].tickers
+
+    @patch.dict(os.environ, {"POLYGON_API_KEY": "test_key"})
+    @patch('src.ingestion.news.massive_source.RESTClient')
+    @patch('src.ingestion.news.massive_source.trafilatura')
+    def test_fetch_for_tickers_deduplicates(self, mock_trafilatura, mock_client_class):
+        """Test that fetch_for_tickers deduplicates by URL."""
+        mock_client = MagicMock()
+        mock_client_class.return_value = mock_client
+
+        # Same article appears for both tickers
+        mock_item = MagicMock()
+        mock_item.id = "shared-article"
+        mock_item.title = "Tech News"
+        mock_item.article_url = "https://example.com/shared"
+        mock_item.published_utc = "2024-01-15T10:30:00Z"
+        mock_item.tickers = ["AAPL", "GOOGL"]
+        mock_item.publisher = MagicMock()
+        mock_item.publisher.name = "Bloomberg"
+
+        mock_client.list_ticker_news.return_value = [mock_item]
+        mock_trafilatura.fetch_url.return_value = "<html>content</html>"
+        mock_trafilatura.extract.return_value = "Article content."
+
+        source = MassiveNewsSource()
+        articles = source.fetch_for_tickers(["AAPL", "GOOGL"], lookback_hours=24)
+
+        # Should only have 1 article despite being returned for both tickers
+        assert len(articles) == 1
+        assert articles[0].url == "https://example.com/shared"
+
+    @patch.dict(os.environ, {"POLYGON_API_KEY": "test_key"})
+    @patch('src.ingestion.news.massive_source.RESTClient')
+    @patch('src.ingestion.news.massive_source.trafilatura')
+    def test_extract_content_failure_returns_none(self, mock_trafilatura, mock_client_class):
+        """Test that content extraction failure returns article with None content."""
+        mock_client = MagicMock()
+        mock_client_class.return_value = mock_client
+
+        mock_item = MagicMock()
+        mock_item.id = "article-456"
+        mock_item.title = "Article Title"
+        mock_item.article_url = "https://example.com/paywalled"
+        mock_item.published_utc = "2024-01-15T10:30:00Z"
+        mock_item.tickers = ["AAPL"]
+        mock_item.publisher = MagicMock()
+        mock_item.publisher.name = "WSJ"
+
+        mock_client.list_ticker_news.return_value = [mock_item]
+
+        # Trafilatura fails to extract
+        mock_trafilatura.fetch_url.return_value = None
+
+        source = MassiveNewsSource()
+        articles = source.fetch_for_ticker("AAPL", lookback_hours=24)
+
+        assert len(articles) == 1
+        assert articles[0].content is None
+        assert articles[0].summary is None
+
+    @patch.dict(os.environ, {"POLYGON_API_KEY": "test_key"})
+    @patch('src.ingestion.news.massive_source.RESTClient')
+    def test_parse_timestamp_iso_format(self, mock_client):
+        """Test parsing ISO timestamp strings."""
+        source = MassiveNewsSource()
+
+        result = source._parse_timestamp("2024-01-15T10:30:00Z")
+        assert result.year == 2024
+        assert result.month == 1
+        assert result.day == 15
+        assert result.hour == 10
+        assert result.minute == 30
+
+    @patch.dict(os.environ, {"POLYGON_API_KEY": "test_key"})
+    @patch('src.ingestion.news.massive_source.RESTClient')
+    def test_parse_timestamp_datetime_passthrough(self, mock_client):
+        """Test that datetime objects pass through unchanged."""
+        source = MassiveNewsSource()
+
+        dt = datetime(2024, 6, 15, 12, 0, tzinfo=timezone.utc)
+        result = source._parse_timestamp(dt)
+        assert result == dt
+
+    @patch.dict(os.environ, {"POLYGON_API_KEY": "test_key"})
+    @patch('src.ingestion.news.massive_source.RESTClient')
+    def test_parse_timestamp_invalid_returns_now(self, mock_client):
+        """Test that invalid timestamp returns current time."""
+        source = MassiveNewsSource()
+
+        result = source._parse_timestamp("invalid-timestamp")
+        # Should return a datetime close to now
+        assert isinstance(result, datetime)
+        assert (datetime.now(timezone.utc) - result).total_seconds() < 5
+
+    @patch.dict(os.environ, {"POLYGON_API_KEY": "test_key"})
+    @patch('src.ingestion.news.massive_source.RESTClient')
+    def test_implements_interface(self, mock_client):
+        """Verify MassiveNewsSource implements NewsSource interface."""
+        source = MassiveNewsSource()
+
+        assert hasattr(source, 'fetch')
+        assert hasattr(source, 'fetch_for_ticker')
+        assert hasattr(source, 'source_name')
+        assert callable(source.fetch)
+        assert callable(source.fetch_for_ticker)
+
+    @pytest.mark.integration
+    def test_fetch_for_ticker_real(self):
+        """Integration test: fetch real news for a ticker."""
+        api_key = os.environ.get("POLYGON_API_KEY")
+        if not api_key:
+            pytest.skip("POLYGON_API_KEY not set")
+
+        source = MassiveNewsSource()
+        articles = source.fetch_for_ticker("AAPL", lookback_hours=72)
 
         assert isinstance(articles, list)
 
