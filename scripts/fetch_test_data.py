@@ -152,9 +152,10 @@ def main():
 
     fixtures_dir = project_root / "tests" / "fixtures"
 
-    # Sample tickers to fetch
-    news_tickers = ["AAPL", "MSFT", "GOOGL"]
-    market_tickers = ["AAPL", "MSFT", "GOOGL", "SPY", "QQQ"]
+    # Sample tickers from universe (one per sector for diversity)
+    # See config/tickers.yaml for full universe
+    news_tickers = ["AAPL", "JNJ", "JPM", "PG", "CAT"]
+    market_tickers = ["AAPL", "JNJ", "JPM", "PG", "CAT", "SPY", "QQQ"]
 
     # Fetch data
     fetch_news_data(fixtures_dir / "news", news_tickers, lookback_hours=168)

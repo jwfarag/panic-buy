@@ -21,8 +21,9 @@ from ingestion.news import MassiveNewsSource, NewsArticle
 
 
 def main():
-    # Configuration
-    tickers = ["AAPL", "GOOGL"]
+    # Configuration - same tickers as fetch_test_data.py
+    # One per sector from config/tickers.yaml for diversity
+    tickers = ["AAPL", "JNJ", "JPM", "PG", "CAT"]
     lookback_hours = 72
 
     print(f"Fetching news for {tickers} from the past {lookback_hours} hours...\n")
