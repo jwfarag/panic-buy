@@ -38,6 +38,12 @@ def fetch_news_data(output_dir: Path, tickers: list[str], lookback_hours: int = 
         print("ERROR: NEWSAPI_AI_KEY not set. Add it to .env or environment.")
         return False
 
+    # Debug: show key prefix to verify correct key is loaded
+    api_key_clean = api_key.strip()
+    print(f"  Using API key: {api_key_clean[:4]}... (length: {len(api_key_clean)})")
+    if len(api_key) != len(api_key_clean):
+        print(f"  WARNING: Key had whitespace stripped")
+
     output_dir.mkdir(parents=True, exist_ok=True)
     source = NewsAPISource(config={"max_items": 5})  # Limit to 5 per ticker
 
