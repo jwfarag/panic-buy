@@ -56,14 +56,35 @@ class StockContext:
     market_cap: Optional[float] = None
     beta: Optional[float] = None
 
-    def format_for_prompt(self) -> str:
-        """Format context for injection into prompts."""
-        news_text = "\n".join(
-            [
-                f"- [{a.get('source', 'Unknown')}] {a.get('title', '')}: {a.get('summary', '')}"
-                for a in self.articles[:5]  # Limit to 5 most relevant
-            ]
-        ) or "No recent news available."
+    # Default fields to extract from article dicts
+    DEFAULT_ARTICLE_FIELDS = ["source", "title", "summary", "content"]
+
+    def format_for_prompt(
+        self,
+        max_articles: int = 5,
+        article_fields: Optional[List[str]] = None,
+    ) -> str:
+        """
+        Format context for injection into prompts.
+
+        Args:
+            max_articles: Maximum number of articles to include (default: 5)
+            article_fields: List of field names to extract from each article dict.
+                           Fields are joined with " | ". Missing fields are skipped.
+                           Default: ["source", "title", "summary", "content"]
+
+        Returns:
+            Formatted string suitable for prompt injection
+        """
+        fields = article_fields or self.DEFAULT_ARTICLE_FIELDS
+        news_lines = []
+
+        for article in self.articles[:max_articles]:
+            parts = [str(article.get(f)) for f in fields if article.get(f)]
+            if parts:
+                news_lines.append(f"- {' | '.join(parts)}")
+
+        news_text = "\n".join(news_lines) or "No recent news available."
 
         return f"""Stock: {self.company_name} ({self.ticker})
 Date: {self.debate_date}
