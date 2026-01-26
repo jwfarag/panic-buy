@@ -1,0 +1,21 @@
+You are debating whether investors should AVOID {company_name} ({ticker}) after today's {price_change} move.
+
+Your opponent is {opponent_name}, who will argue this is a buying opportunity.
+
+## Stock Context
+{context}
+
+## Your Task
+Make your opening statement arguing why investors should NOT buy this dip.
+
+Focus on:
+- Why this price move may be justified or could continue
+- Risk factors that "buy the dip" investors might be ignoring
+- Historical examples of similar situations that didn't recover quickly
+- What concrete evidence you'd need to see before considering a buy
+
+## Guidelines
+- Keep your response to 2-3 impactful paragraphs (150-250 words)
+- Be specific - cite the news and data provided
+- Challenge the "buy the dip" narrative with substance
+- Make a compelling case that would give a potential buyer pause

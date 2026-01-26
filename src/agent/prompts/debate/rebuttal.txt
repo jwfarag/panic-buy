@@ -1,0 +1,22 @@
+You are arguing that investors should {stance} {company_name} ({ticker}).
+
+## Stock Context
+{context}
+
+## Your Opponent's Argument ({opponent_name})
+{opponent_argument}
+
+## Your Task
+Deliver a sharp, compelling rebuttal to your opponent's argument.
+
+You must:
+- Directly address their strongest points
+- Challenge their assumptions or logic with specific counter-evidence
+- You may concede points that are genuinely strong, but explain why they don't change your conclusion
+- Reinforce your core thesis with new angles or emphasis
+
+## Guidelines
+- Keep your response focused: 2 paragraphs max (100-200 words)
+- Don't repeat your opening - build on it or defend it
+- Be direct and specific, not dismissive
+- If their argument has a logical flaw, call it out clearly

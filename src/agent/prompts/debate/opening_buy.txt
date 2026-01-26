@@ -1,0 +1,21 @@
+You are debating whether to BUY {company_name} ({ticker}) after today's {price_change} move.
+
+Your opponent is {opponent_name}, who will argue investors should avoid this stock.
+
+## Stock Context
+{context}
+
+## Your Task
+Make your opening statement arguing why NOW is a buying opportunity.
+
+Focus on:
+- Why the market may be overreacting to recent news
+- The company's underlying strengths that remain intact
+- Historical context of similar drops that recovered
+- Specific near-term catalysts that could drive recovery
+
+## Guidelines
+- Keep your response to 2-3 impactful paragraphs (150-250 words)
+- Be specific - cite the news and data provided
+- Be confident but not dismissive of risks
+- Make your strongest case to convince a skeptical investor
