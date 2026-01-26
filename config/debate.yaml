@@ -1,0 +1,132 @@
+# Stock Debate Agents Configuration
+# ==================================
+# Configure the debate module for "buy vs. don't buy" analysis.
+
+# Model settings
+# --------------
+model:
+  provider: "anthropic"
+  name: "claude-sonnet-4-20250514"
+
+  # Per-phase token limits
+  max_tokens:
+    opening: 500
+    rebuttal: 400
+    summary: 300
+
+# Debate structure
+# ----------------
+structure:
+  # Toggle phases on/off for quick iteration
+  phases:
+    opening_statements: true
+    rebuttals: true
+    summary: true
+
+  # Who opens first?
+  bull_opens_first: true
+
+  # Number of rebuttal rounds (future: support multiple rounds)
+  rebuttal_rounds: 1
+
+# Participant personas
+# --------------------
+# These are placeholder personas - swap them to change debate dynamics.
+participants:
+  bull:
+    id: "bull_analyst"
+    name: "Alex Chen"
+    persona: |
+      You are Alex Chen, a seasoned value investor with 15 years of experience
+      finding opportunities in market overreactions. You believe markets often
+      panic over short-term news, creating buying opportunities in quality companies.
+      You look for strong fundamentals, competitive moats, and management track records.
+    style:
+      - "Focus on long-term value"
+      - "Cite historical precedents of recoveries"
+      - "Acknowledge risks but emphasize opportunity"
+      - "Use specific data points"
+    temperature: 0.7
+
+  bear:
+    id: "bear_analyst"
+    name: "Sarah Martinez"
+    persona: |
+      You are Sarah Martinez, a risk-focused analyst known for protecting clients
+      from value traps. You've seen too many investors catch falling knives by
+      ignoring warning signs. You prioritize capital preservation and believe in
+      waiting for clear evidence of stabilization before buying.
+    style:
+      - "Focus on risk factors and what could go wrong"
+      - "Question assumptions about recovery"
+      - "Cite examples of stocks that didn't recover"
+      - "Emphasize uncertainty and unknowns"
+    temperature: 0.7
+
+# Alternative personas (uncomment to swap)
+# ----------------------------------------
+# participants_alt:
+#   bull:
+#     id: "momentum_trader"
+#     name: "Jake Thompson"
+#     persona: |
+#       You are Jake Thompson, a momentum trader who spots reversal patterns.
+#       You focus on technical signals, volume patterns, and short-term catalysts.
+#     style:
+#       - "Focus on technical patterns"
+#       - "Cite volume and price action"
+#       - "Short-term time horizon"
+#     temperature: 0.8
+#
+#   bear:
+#     id: "macro_skeptic"
+#     name: "Elena Volkov"
+#     persona: |
+#       You are Elena Volkov, a macro strategist who sees individual stocks
+#       in the context of broader economic trends. You're skeptical of bottom-fishing
+#       when systemic risks remain elevated.
+#     style:
+#       - "Connect stock to macro trends"
+#       - "Focus on sector and economic risks"
+#       - "Reference Fed, rates, and cycles"
+#     temperature: 0.6
+
+# Output settings
+# ---------------
+output:
+  # Formats to generate
+  formats:
+    - "markdown"
+    - "json"
+
+  # Where to save debate results
+  output_dir: "./data/reports/debates"
+
+  # Include metadata in output
+  include_metadata: true
+  include_timestamps: true
+
+# Integration settings
+# --------------------
+integration:
+  # When to run debates in the pipeline
+  trigger: "after_ranking"  # Options: "after_ranking", "manual_only"
+
+  # Only debate stocks meeting these criteria
+  filters:
+    min_drop_pct: 0.05       # At least 5% drop
+    min_volume_ratio: 1.5    # At least 150% of average volume
+    max_debates_per_run: 5   # Limit to top N candidates
+
+  # Include debate summary in the daily report
+  include_in_report: true
+
+# Prompt templates
+# ----------------
+prompts:
+  template_dir: "src/agent/prompts/debate"
+  templates:
+    opening_buy: "opening_buy.txt"
+    opening_avoid: "opening_avoid.txt"
+    rebuttal: "rebuttal.txt"
+    summary: "summary.txt"

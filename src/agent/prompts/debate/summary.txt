@@ -1,0 +1,26 @@
+Summarize this debate about whether to buy {company_name} ({ticker}).
+
+## Stock Context
+{context}
+
+## The Debate
+{debate_transcript}
+
+## Your Task
+Provide a balanced, neutral summary that helps investors make an informed decision.
+
+Structure your summary as follows:
+
+1. **The Bull Case**: What are the strongest arguments for buying? (2-3 sentences)
+
+2. **The Bear Case**: What are the strongest arguments for avoiding? (2-3 sentences)
+
+3. **The Crux**: What is the key disagreement? What fact or future event, if known, would resolve this debate? (1-2 sentences)
+
+4. **Watch List**: What specific data points or events should investors monitor? (2-3 bullet points)
+
+## Guidelines
+- Stay neutral - do NOT pick a winner or make a recommendation
+- Keep it concise: 150-200 words total
+- Be specific about what would change the calculus for each side
+- Help the reader understand both perspectives so they can decide for themselves
